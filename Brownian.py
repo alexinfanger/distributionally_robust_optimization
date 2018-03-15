@@ -72,3 +72,5 @@ def brownian(x0, n, dt, delta, out=None):
     out += np.expand_dims(x0, axis=-1)
 
     return out
+
+def Brownian_increment()
