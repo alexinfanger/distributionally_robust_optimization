@@ -4,6 +4,8 @@ import numpy as np
 from config import config
 
 import matplotlib.pyplot as plt
+import pickle
+
 
 def simulate_coupling():
 
@@ -13,34 +15,34 @@ def simulate_coupling():
   c_sum = 0.0
   c = 0 # index
   tau=[0.0]
-  B = [0.0]
-  S = [0.0]
-  N = [0.0]
-  A = [0.0]
-  Z = [0.0]
-  for x in X:
+  B = np.zeros(config.ndt)
+  S = np.zeros(config.ndt)
+  N = np.zeros(config.ndt)
+  A = np.zeros(config.ndt)
+  Z = np.zeros(config.ndt)
+  while True:
+    x = np.random.pareto(2.2)
     found=False
     while not found:
       c+=1
+      if c>=config.ndt-1:
+        break
       c_time += config.dt
-      B.append(B[c-1]+np.random.normal(scale=np.sqrt(config.dt)))
+      B[c] = B[c-1]+np.random.normal(scale=np.sqrt(config.dt))
       if c_max < B[c]:
         c_max=B[c]
       elif B[c]<=c_max-x:
         tau.append(c_time)
         c_max = B[c]
         c_sum += x
-        S.append(c_max)
-        N.append(c_sum)
+        S[c] = c_max
+        N[c] = c_sum
         break
-      S.append(c_max)
-      N.append(c_sum)
+      S[c] = c_max
+      N[c] = c_sum
+    if c>=config.ndt-1:
+      break
 
-
-  S = np.array(S)
-  B=np.array(B)
-  Z=np.array(Z)
-  N=np.array(N)
   A = S+N
 
 
@@ -67,33 +69,65 @@ def simulate_coupling():
 
 
 
+  B = -B
+  Z=-Z
   t = np.linspace(0,len(B)*config.dt,num=len(B))
 
   # splot = plt.plot(t[0:len(Z)],S,label='S')
-  bplot = plt.plot(t[0:len(Z)],-B[0:len(Z)],label='B')
-  zplot = plt.plot(t[0:len(Z)],-Z[0:len(Z)],label='Z')
+  # bplot = plt.plot(t[0:len(Z)],B[0:len(Z)],label='B')
+  # zplot = plt.plot(t[0:len(Z)],Z[0:len(Z)],label='Z')
   # Aplot = plt.plot(t[0:len(Z)],A)
   # Nplot = plt.plot(t[0:len(Z)],N,label='N')
   # thelineplot = plt.plot(theline)
-  print('len of B')
-  print(len(B))
   # print('Is A non-decreasing')
   # print(np.all(np.diff(A) >= 0))
 
-  plt.legend()
-  plt.show()
+  # plt.legend()
+  # plt.show()
   # print(len(Z))
+  return [B[0:len(Z)],Z[0:len(Z)]]
 
 
+def expected_cost(nsamples):
+  samples = np.zeros(nsamples)
+  for i in range(0,nsamples):
+    rtuple = simulate_coupling()
+    samples[i] = max(abs(rtuple[0]-rtuple[1]))
+  return np.mean(samples)
+
+def clt(nsamples,nmeans):
+  means = np.zeros(nmeans)
+  samples = np.zeros(nmeans,nsamples)
+  for i in range(0,nmeans):
+    for j in range(0,nsamples):
+      rtuple = simulate_coupling()
+      samples[i,j] = max(abs(rtuple[0]-rtuple[1]))
+      means[i] = np.mean(samples[i,:])
+  print(np.shape(means))
+  meansdict = {"means": means, "samples": samples}
+  pickle_out = open("vals.pickle","wb")
+  pickle.dump(meansdict,pickle_out)
+  pickle_out.close()
 
 
+# def plothist(data):
+#   plt.open()
 
-
-
-  
 
 if __name__ == '__main__':
-  simulate_coupling()
+  # rtuple = simulate_coupling()
+  # ctuple = expected_cost(100)
+  # 
+  # clt(100,100)
+
+  # pickle_in = open("vals.pickle","rb")
+  # test = pickle.load(pickle_in)
+  # means = test["means"]
+  # print(test["samples"])
+  # pickle_in.close()
+
+  # plt.hist(means,10)
+  # plt.show()
   # A = [1,2,3]
   # print([A[i] for i in (1,2)])
 

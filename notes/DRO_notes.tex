@@ -1,0 +1,135 @@
+
+\documentclass[12pt]{article}
+\usepackage[margin=1in]{geometry} 
+\usepackage{amsmath,amsthm,amssymb,amsfonts,mathtools,cancel,enumerate,bm,float}
+\usepackage[linesnumbered,ruled,vlined]{algorithm2e}
+
+
+\newcommand{\N}{\mathbb{N}}
+\newcommand{\Z}{\mathbb{Z}}
+\newcommand{\R}{\mathbb{R}}
+\newcommand{\Q}{\mathbb{Q}}
+\newcommand{\ddt}{\frac{d}{dt}}
+\newcommand\norm[1]{\left\lVert#1\right\rVert}
+
+\renewcommand{\Pr}{\textbf{Pr}}
+\newcommand{\E}{\textbf{E}}
+\newcommand{\ind}{\textbf{I}}
+\newcommand{\bin}{\textbf{binom}}
+\newcommand{\Poisson}{\textbf{Poisson}}
+\newcommand{\var}{\textbf{var}}
+\newcommand{\cov}{\textbf{cov}}
+\newcommand{\prightarrow}{\overset{p}{\to}}
+\newcommand{\asrightarrow}{\overset{a.s.}{\to}}
+\newcommand{\define}{\overset{\Delta}{=}}
+\newcommand{\dist}{\overset{D}{=}}
+\newcommand{\cond}{\textbf{cond}}
+
+
+
+%Theorems, proofs and solutions.
+\theoremstyle{definition}
+\newtheorem{theorem}{Theorem}
+\theoremstyle{definition}
+\newtheorem{lemma}{Lemma}
+\newtheorem{remark}{Remark}
+\newtheorem{proposition}{Proposition}
+\newtheorem{scolium}{Scolium}   %% And a not so common one.
+\theoremstyle{definition}
+\newtheorem{definition}{Definition}
+\newtheorem{corollary}{Corollary}
+\newtheorem{example}{Example}
+\newenvironment{solution}
+  {\begin{proof}[Solution]}
+  {\end{proof}}
+
+
+
+
+
+\setlength{\parindent}{0pt}
+\newcommand\numberthis{\addtocounter{equation}{1}\tag{\theequation}}
+
+\newcommand{\overbar}[1]{\mkern 1.5mu\overline{\mkern-1.5mu#1\mkern-1.5mu}\mkern 1.5mu}
+
+\newenvironment{problem}[2][Problem]{\begin{trivlist}
+\item[\hskip \labelsep {\bfseries #1}\hskip \labelsep {\bfseries #2.}]}{\end{trivlist}}
+
+\makeatletter
+\begin{document}
+
+
+\title{Notes on Distributionally Robust Optimization}
+\author{Alex Infanger}
+\maketitle
+
+We work here with the Cramer-Lundberg model for insurance claims. This is a continuous time stochastic process, where the amount of money in the bank $R(t)$ satisfies
+\begin{align*}
+R(t)=u+ct-\sum_{i=1}^{N_t}X_i.
+\end{align*}
+Here $u$ is the initial money in the bank, $c$ is the premium rate, and the $X_i$ are claim sizes. They come in at a rate that is a Poisson process, $N_t$. You have to assume the $X_i$ are distributed in some way. Let this distribution have first and second moments $m_1$ and $m_2$ respectively. We can assume $m_1<\infty$ else the insurance company would have no point insuring such a risk. Just to make even, the amount of money coming in has to be the amount of money being paid out on average, so the choice,
+\begin{align*}
+c=\nu m_1
+\end{align*}
+where $\nu$ is the rate at which claims come in. We add a safety loading -- the so-called risk premium -- and so the model is,
+\begin{align*}
+c=(1+\eta)\nu m_1.
+\end{align*}
+Hence our final model is of the form,
+\begin{align*}
+R(t)=u+(1+\eta)\nu m_1t-\sum_{i=1}^{N_t}X_i.
+\end{align*}
+We are interested in the probability of ruin
+\begin{align*}
+\psi(u,T)\define\Pr\left[\inf_{t\in[0,T]} R(t)\leq 0\right].
+\end{align*}
+It turns out that it is computationally intractable to deal with the above so we instead work with the following Brownian motion approximation,
+\begin{align*}
+R_B(t)&\define u+(1+\eta)\nu m_1t - (\nu m_1t + \sqrt{\nu m_2}B(t))\\
+&=u+\eta \nu m_1t-\sqrt{\nu m_2}B(t)
+\end{align*}
+Our mission is to robustify this estimate by allowing for some non-trivial movement away from the Brownian motion. For this purpose, we identity the Polish space where the stochastic processes of interest live as the \emph{Skorkhod space},
+\begin{align*}
+S=D([0,T],\R)
+\end{align*}
+the space of real valued right-continuous functions with left limits equipped with the $J_1$ metric. The $J_1$ metric is supposed to be like a $\sup$ metric that is robust against time shifts that go to zero. The formal definition of the $J_1$ metric is, if we let $\Lambda$ be the set of strictly increasing functions $\lambda:[0,T]\rightarrow [0,T]$ such that $\lambda\in \Lambda$ implies $\lambda,\lambda^{-1}$ are continuous up to a set of measure zero, and let $e$ be the identity map on $[0,T]$. Then we define
+\begin{align*}
+d_{J_1}(x_1,x_2)&\define\inf_{\lambda\in \Lambda}\left\{\norm{x_1\circ \lambda -x_2}_{\infty}\lor \norm{\lambda-e}_{\infty}\right\}
+\end{align*}
+where $\norm{\cdot}_{\infty}$ is the $\sup$ norm and $\lor$ is the max function.\\
+
+Intuitively, this is suppose to capture the sup norm except you're allowed to perturb the function input a litte bit. So it's a bit weaker than the sup norm. Take for example when $T=1$,
+\begin{align*}
+x_n=(1+n^{-1})\bm{1}_{\left\{[\frac{1}{2}+\frac{1}{n},1]\right\}}, \ \ x = \bm{1}_{\left\{[\frac{1}{2},1]\right\}}.
+\end{align*}
+Then $\norm{x_n-x}_{\infty}\geq 1$ for all $n$ but $d_{J_1}(x_n,x)\rightarrow 0$ as $n\rightarrow\infty$. To show this notice that,
+\begin{align*}
+d_{J_1}(x_n,x)&=\inf_{\lambda\in \Lambda}\left\{\norm{x_n\circ \lambda - x}_\infty \lor \norm{\lambda-e}_{\infty}\right\}\\
+&\leq \max\left\{\norm{x_n\circ \lambda_n-x}_\infty, \norm{\lambda_n-e}_{\infty}\right\},
+\end{align*}
+for some feasible choices $\lambda_n$. Let us choose 
+\begin{align*}
+\lambda_n&=\begin{cases} x & x\in [0,\frac{1}{2}]\\
+(1-\frac{2}{n})x + \frac{2}{n}& x\in [\frac{1}{2},1],
+\end{cases}
+\end{align*}
+which is effectively the identity from $[0,\frac{1}{2}]$ and then jumps to $\frac{1}{2}+\frac{1}{n}$ and then is the line which connects $(\frac{1}{2},\frac{1}{2}+\frac{1}{n})$ to $(1,1)$. Notice now that the difference between $x_n\circ \lambda_n$ and $x$ now only sees contribution from the part of the domain $\frac{1}{2}+\frac{1}{n}$, so that,
+\begin{align*}
+\norm{x_n\circ \lambda_n-x}_{\infty}= \frac{1}{n}.
+\end{align*}
+On the other hand we have that the identity map and $\lambda$ differ the most at the point $x=\frac{1}{2}$ where they differ by $\frac{1}{n}$, so that we conclude,
+\begin{align*}
+d_{J_1}(x_1,x_2)&=\inf_{\lambda\in \Lambda}\left\{\norm{x_n\circ \lambda}_\infty \lor \norm{\lambda-e}_{\infty}\right\}\\
+&\leq \max\left\{\norm{x_n\circ \lambda_n}_\infty, \norm{\lambda_n-e}_{\infty}\right\}\\
+&\leq \frac{1}{n}\rightarrow0.
+\end{align*}
+
+
+
+\section*{Numerical Example}
+In the numerical example, Jose and Karthyek Murthy, use the Paretto distribution for the claim sizes, with $\alpha=2.2$. This corresponds to a mean of $\frac{\alpha}{\alpha-1}$. The question
+
+
+
+\end{document}
+

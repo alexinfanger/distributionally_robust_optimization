@@ -1,6 +1,6 @@
 import numpy as np
 class config():
-  T = 100
+  ndt = 1000
   nu = 1
   p = 2
   eta = .1
