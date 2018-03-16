@@ -74,17 +74,17 @@ def simulate_coupling():
   t = np.linspace(0,len(B)*config.dt,num=len(B))
 
   # splot = plt.plot(t[0:len(Z)],S,label='S')
-  # bplot = plt.plot(t[0:len(Z)],B[0:len(Z)],label='B')
-  # zplot = plt.plot(t[0:len(Z)],Z[0:len(Z)],label='Z')
+  bplot = plt.plot(t[0:len(Z)],B[0:len(Z)],label='B')
+  zplot = plt.plot(t[0:len(Z)],Z[0:len(Z)],label='Z')
   # Aplot = plt.plot(t[0:len(Z)],A)
   # Nplot = plt.plot(t[0:len(Z)],N,label='N')
   # thelineplot = plt.plot(theline)
   # print('Is A non-decreasing')
   # print(np.all(np.diff(A) >= 0))
 
-  # plt.legend()
-  # plt.show()
-  # print(len(Z))
+  plt.legend()
+  plt.show()
+  print(len(Z))
   return [B[0:len(Z)],Z[0:len(Z)]]
 
 
@@ -109,21 +109,17 @@ def clt(nsamples,nmeans):
   pickle.dump(meansdict,pickle_out)
   pickle_out.close()
 
-def make_data(nsamples):
-  samples = np.zeros(nsamples,)
-  for i in range(0,nsamples):
-
-
-
-# def plothist(data):
-#   plt.open()
+# def make_data(nsamples):
+  # samples = np.zeros(nsamples,)
+  # for i in range(0,nsamples):
 
 
 if __name__ == '__main__':
-  # rtuple = simulate_coupling()
+  rtuple = simulate_coupling()
+
   # ctuple = expected_cost(100)
   # 
-  clt(1000,1000)
+  # clt(1000,1000)
 
   # pickle_in = open("vals.pickle","rb")
   # test = pickle.load(pickle_in)

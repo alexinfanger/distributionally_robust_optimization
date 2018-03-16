@@ -32,6 +32,7 @@
 \newtheorem{theorem}{Theorem}
 \theoremstyle{definition}
 \newtheorem{lemma}{Lemma}
+\newtheorem{assumption}{Assumption}
 \newtheorem{remark}{Remark}
 \newtheorem{proposition}{Proposition}
 \newtheorem{scolium}{Scolium}   %% And a not so common one.
@@ -64,6 +65,30 @@
 \maketitle
 \emph{All of the following is based on or directly from \cite{JosePaper}.}\\
 
+The following assumptions will be made throughout the work.
+\begin{assumption} (A1) The cost function $c:S\times S\rightarrow\R^+$ is a non-negative lower semicontinuous function satisfying $c(x,y)=0$ if and only if $x=y$.
+\end{assumption}
+\begin{assumption} (A2) The function $f:S\rightarrow\R$ whose expectation we are interested in lives in $L^1(d\mu)$ and is upper semicontinuous.
+\end{assumption}
+
+We will take for granted the ``DRO duality'' proved in class for the compact $S$ case (with discussion over the extension). We restate it here.
+
+\begin{theorem} \emph{(Strong Duality for DRO)} Under the assumptions (A1) and (A2), we have that the primal problem
+\begin{align*}
+\begin{array}{ll@{}ll}
+\displaystyle \sup   &\displaystyle \int_{}^{}f d\nu &\\
+\text{s.t.}&  d_c(\mu,\nu)\leq \delta\\
+                 & 
+\end{array}
+\end{align*}
+is equal to the dual problem, (which upon noting the form of the optimizer can be written as a one dimensional problem)
+\begin{align*}
+\begin{array}{ll@{}ll}
+\displaystyle \inf_{\lambda\geq 0}  &\displaystyle \lambda\delta +  \E_{\mu}\left[\sup_{y\in S} \left(f(y)-\lambda c(X,y)\right)\right]. 
+\end{array}
+\end{align*}
+
+\end{theorem}
 
 We work here with the Cramer-Lundberg model for insurance claims. This is a continuous time stochastic process, where the amount of money in the bank $R(t)$ satisfies
 \begin{align*}
@@ -132,16 +157,21 @@ d_{J_1}(x_1,x_2)&=\inf_{\lambda\in \Lambda}\left\{\norm{x_n\circ \lambda}_\infty
 In the numerical example from Jose Blanchet and Karthyek Murthy, they use the Paretto distribution for the claim sizes, with $\alpha=2.2$. 
 
 
-\section*{Questions}
+\section*{Questions and things still to solve}
 \begin{enumerate}
 \item I am worried that I might have implemented that Khosnevisan embedding incorrectly for the following reason: I have to simulate more Brownian motion time steps than Poisson timesteps. This stems from the fact that 
 \begin{align*}
 \sigma(t)\define\inf\{s: A(s)=m_1t\}.
 \end{align*}
-But $A(t)=N(t)+S(t)$ is effectively the $\sup$ of a Brownian motion. Because of this it goes like $\sqrt{t}t=o(t)$ such that the above equality (or in the compure it is a $\geq$) exists only for $t$ less than that simulated.
+But $A(t)=N(t)+S(t)$ is effectively the $\sup$ of a Brownian motion. Because of this it goes like $\sqrt{t}=o(t)$ such that the above equality (or in the computer it is a $\geq$) exists only for $t$ less than that simulated.
 
 \item How would I implement the large deviations simulation?
 
+\item The uncountable inf of lower semi-continuous is not necessarily lower semicontinuous. How do I show that for our case,
+\begin{align*}
+h(u)=\int_{\left\{x:c(x,A)\leq u\right\}}^{}c(x,A)d\mu(x)
+\end{align*}
+is continuous? This is a stochastic integral in our case.
 
 \end{enumerate}
 

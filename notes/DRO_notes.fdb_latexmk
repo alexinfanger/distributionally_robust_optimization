@@ -1,5 +1,5 @@
 # Fdb version 3
-["pdflatex"] 1521184189 "DRO_notes.tex" "DRO_notes.pdf" "DRO_notes" 1521184200
+["pdflatex"] 1521224267 "DRO_notes.tex" "DRO_notes.pdf" "DRO_notes" 1521224377
   "/usr/local/texlive/2015/texmf-dist/fonts/map/fontname/texfonts.map" 1272929888 3287 e6b82fe08f5336d4d5ebc73fb1152e87 ""
   "/usr/local/texlive/2015/texmf-dist/fonts/tfm/public/amsfonts/cmextra/cmbsy6.tfm" 1246382020 1124 14ccf5552bc7f77ca02a8a402bea8bfb ""
   "/usr/local/texlive/2015/texmf-dist/fonts/tfm/public/amsfonts/cmextra/cmbsy7.tfm" 1246382020 1120 7f9f170e8aa57527ad6c49feafd45d54 ""
@@ -94,8 +94,8 @@
   "/usr/local/texlive/2015/texmf-var/fonts/map/pdftex/updmap/pdftex.map" 1432479641 1764542 91654ba72bdb667e84ea24f076ae16d8 ""
   "/usr/local/texlive/2015/texmf-var/web2c/pdftex/pdflatex.fmt" 1432479681 3849859 39a7d258195bde2394e244961601fbc5 ""
   "/usr/local/texlive/2015/texmf.cnf" 1432479636 577 0d611272082f3cdb8e80e09a3c69cf07 ""
-  "DRO_notes.aux" 1521184190 52 15d68bb89649eee730548decd3884a9c ""
-  "DRO_notes.tex" 1521184199 7234 638a70bf7be60ebbe5a81a8dbe85bc69 ""
+  "DRO_notes.aux" 1521224267 52 15d68bb89649eee730548decd3884a9c ""
+  "DRO_notes.tex" 1521224377 8746 2dbd066bea2cba494adb3786b7b00ef8 ""
   (generated)
   "DRO_notes.pdf"
   "DRO_notes.log"
