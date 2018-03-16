@@ -109,6 +109,11 @@ def clt(nsamples,nmeans):
   pickle.dump(meansdict,pickle_out)
   pickle_out.close()
 
+def make_data(nsamples):
+  samples = np.zeros(nsamples,)
+  for i in range(0,nsamples):
+
+
 
 # def plothist(data):
 #   plt.open()
@@ -118,7 +123,7 @@ if __name__ == '__main__':
   # rtuple = simulate_coupling()
   # ctuple = expected_cost(100)
   # 
-  # clt(100,100)
+  clt(1000,1000)
 
   # pickle_in = open("vals.pickle","rb")
   # test = pickle.load(pickle_in)
