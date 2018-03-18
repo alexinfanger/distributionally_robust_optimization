@@ -160,7 +160,7 @@ It turns out that it is computationally intractable to solve the above so we ins
 R_B(t)&\define u+(1+\eta)\nu m_1t - (\nu m_1t + \sqrt{\nu m_2}B(t))\\
 &=u+\eta \nu m_1t-\sqrt{\nu m_2}B(t).
 \end{align*}
-Our mission is to robustify this estimate by allowing for some non-trivial movement away from the Brownian motion. For this purpose, we identity the Polish space where the stochastic processes of interest live as the \emph{Skorkhod space},
+(There may be a typo here, double check if it's $\nu^2$). Our mission is to robustify this estimate by allowing for some non-trivial movement away from the Brownian motion. For this purpose, we identity the Polish space where the stochastic processes of interest live as the \emph{Skorkhod space},
 \begin{align*}
 S=D([0,T],\R)
 \end{align*}
@@ -246,10 +246,32 @@ where we notice $y_n\in A_{\frac{1}{2}}$ for all $n$. On the other hand, we have
 % where we have used the fact that $d_{J_1}(x,y)$ is weaker than the $\sup$ norm. 
 % \end{proof}
 
+\begin{lemma} The minimum cost to the set $A_u$ satisfies,
+\begin{align*}
+c(x,A_u) \define\inf\left\{c(x,y),y\in A_u\right\} = \left(u-\sup_{t\in[0,T]}\left(\sqrt{\nu m_2}x(t)-\eta \nu m_1t\right)\right)^p
+\end{align*}
+\begin{proof}
+In Appendix of paper. To be added.
+\end{proof}
+\end{lemma}
 
+\begin{lemma} The function,
+\begin{align*}
+h(s)=\E_{\mu}\left[c(X,A); c(x,A)\leq s\right]
+\end{align*}
+is continuous. 
+\end{lemma}
+\begin{proof} Supposedly it is clear by inspection.
+\end{proof}
+
+With the above statements you can identify $\lambda^*=h^{-1}(\delta)=\inf\left\{s\geq 0 : h(s)\geq \delta\right\}$. We can use Theorem \ref{simplified_3} to show,
+\begin{align*}
+\psi_{\text{rob}}(u,T)= \Pr\left[\sup_{t\in[0,T]} \left(\sqrt{\nu m_2}x(t)-\eta \nu m_1t\right)>u -\left(\frac{1}{\lambda^*}\right)^{1/p}\right] = \psi_B(\tilde u, T),
+\end{align*}
+and so finding the robust ruin probability just settles down to finding a different Brownian motion probability. 
 
 \section*{Numerical Example}
-In the numerical example from Jose Blanchet and Karthyek Murthy, they use the Paretto distribution for the claim sizes, with $\alpha=2.2$. 
+In the numerical example from Jose Blanchet and Karthyek Murthy, they use the Paretto distribution for the claim sizes, with $\alpha=2.2$. One thing we need to do is to pick $\delta$. Ideally, we pick $\delta$ just big enough to capture the distance from the Brownian motion to our process. We approximate the optimal coupling by finding a good coupling between the Brownian motion and the Poisson process. The coupling offered by Khoshnevisan simulates a coupled Brownian motion and Poisson process so that they are very correlated. Hence we seem to assume the cost function is supermodular. With this embedding we can estimate the cost $\delta$ with Monte Carlo, and then use this to find $\lambda^*$. At this point we generate a new Brownian motion according to 
 
 
 \section*{Questions and things still to solve}
@@ -268,6 +290,7 @@ h(u)=\int_{\left\{x:c(x,A)\leq u\right\}}^{}c(x,A)d\mu(x)
 \end{align*}
 is continuous? This is a stochastic integral in our case.
 \item  I seemed to have disproven the fact that $A_u$ is closed; where is my mistake or is this a typo?
+\item It seems to me that the Khoshnevisan embedding is trying hard to correlate the two processes: does this mean we are assuming the cost function is supermodular?
 
 \end{enumerate}
 
