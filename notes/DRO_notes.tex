@@ -73,7 +73,7 @@ The following assumptions will be made throughout the work.
 
 We will take for granted the ``DRO duality'' proved in class for the compact $S$ case (with discussion over the extension). We restate it here.
 
-\begin{theorem} \emph{(Strong Duality for DRO)} Under the assumptions (A1) and (A2), we have that the primal problem
+\begin{theorem} \emph{(Strong Duality for DRO)} \label{strong_duality} Under the assumptions (A1) and (A2), we have that the primal problem
 \begin{align*}
 \begin{array}{ll@{}ll}
 \displaystyle \sup   &\displaystyle \int_{}^{}f d\nu &\\
@@ -81,15 +81,60 @@ We will take for granted the ``DRO duality'' proved in class for the compact $S$
                  & 
 \end{array}
 \end{align*}
-is equal to the dual problem, (which upon noting the form of the optimizer can be written as a one dimensional problem)
+is equal to the dual problem, 
+\begin{align*}
+\begin{array}{ll@{}ll}
+\displaystyle \inf  &\displaystyle \lambda \delta + \int_{}^{}\phi d\mu &\\
+\text{s.t.}& \lambda\geq 0 \\
+          & \phi(x)+\lambda c(x,y) \geq f(y) \text{ for all $x,y$}
+\end{array}
+\end{align*}
+(which upon noting the form of the optimizer can be written as a one dimensional problem)
 \begin{align*}
 \begin{array}{ll@{}ll}
 \displaystyle \inf_{\lambda\geq 0}  &\displaystyle \lambda\delta +  \E_{\mu}\left[\sup_{y\in S} \left(f(y)-\lambda c(X,y)\right)\right]. 
 \end{array}
 \end{align*}
-
+With this strong duality come the complementary slackness conditions,
+\begin{align*}
+&\lambda\left(d_c(\mu,\nu)-\delta\right)=0\\
+&\phi(x)=\sup_y \left(f(y)-\lambda c(x,y)\right) \text{ $\pi^*$ a.s.}
+\end{align*}
 \end{theorem}
 
+Our mission now is to simplify the above when we our function $f=\bm{1}_{A}$ is an indicator, so that we can calulate ruin probabilities. Let me extend our definition slightly from class,
+\begin{align*}
+c(x,A) = \begin{cases}
+\inf\{c(x,y), y\in A\} & x\not\in A\\
+0 & \text{otherwise}
+\end{cases}.
+\end{align*}
+
+
+We begin by recognizing that
+\begin{align*}
+\sup_{y\in S}\left\{\bm{1}_A(y)-\lambda c(x,y)\right\}=\left(1-\lambda c(x,A)\right)^+,
+\end{align*}
+which is clear casewise. Notice the left hand side is bounded above by one because $\lambda,c\geq 0$. Then if $x\in A$ choose $y=x$ to achieve that bound. On the other hand if $x\not\in A$ the choice $y=x$ gets you zero, and the question is whether we can choose $y\in A$ that is $c-$close enough to $x$ to have $\bm{1}_A(y)-\lambda c(x,y)\geq 0$. hence we have,
+\begin{align*}
+\sup_{y\in S}\left\{\bm{1}_A(y)-\lambda c(x,y)\right\}&=\max\{1-\lambda c(x,A), 0\}=\left(1-\lambda c(x,A)\right)^+.
+\end{align*}
+
+Potentially, for the sake of time, skip the build up of theorem 3. 
+\begin{theorem}\label{simplified_3} \emph{(Simplified Theorem 3)} Suppose that Assumption (A1) is in force. If $A$ is a nonempty closed subset of the Polish space $S$, and $\lambda\in[0,\infty)$ attains the infimum in Theorem \ref{strong_duality}, and the function,
+\begin{align*}
+h(u)\define\int_{\left\{x: c(x,A)\leq u\right\}}^{}c(x,A)d\mu(x)
+\end{align*}
+is continuous, we can guarantee
+\begin{align*}
+\sup\left\{P(A): d_c(\mu,P)\leq \delta\right\}=\mu\left\{ x: c(x,A)\leq \frac{1}{\lambda^*}\right\}.
+\end{align*}
+\end{theorem}
+
+\clearpage
+
+
+\section*{An Example}
 We work here with the Cramer-Lundberg model for insurance claims. This is a continuous time stochastic process, where the amount of money in the bank $R(t)$ satisfies
 \begin{align*}
 R(t)=u+ct-\sum_{i=1}^{N_t}X_i.
@@ -119,13 +164,16 @@ Our mission is to robustify this estimate by allowing for some non-trivial movem
 \begin{align*}
 S=D([0,T],\R)
 \end{align*}
-the space of real valued right-continuous functions with left limits equipped with the $J_1$ metric. The $J_1$ metric is supposed to be like a $\sup$ metric that is robust against time shifts that go to zero. The formal definition of the $J_1$ metric is, if we let $\Lambda$ be the set of strictly increasing functions $\lambda:[0,T]\rightarrow [0,T]$ such that $\lambda\in \Lambda$ implies $\lambda,\lambda^{-1}$ are continuous up to a set of measure zero, and let $e$ be the identity map on $[0,T]$. Then we define
-\begin{align*}
-d_{J_1}(x_1,x_2)&\define\inf_{\lambda\in \Lambda}\left\{\norm{x_1\circ \lambda -x_2}_{\infty}\lor \norm{\lambda-e}_{\infty}\right\}
-\end{align*}
+the space of real valued right-continuous functions with left limits equipped with the $J_1$ metric. 
+
+\section*{A Quick Digression: The $J_1$ Metric}
+The $J_1$ metric is supposed to be like a $\sup$ metric that is robust against time shifts that go to zero. The formal definition of the $J_1$ metric is, if we let $\Lambda$ be the set of strictly increasing functions $\lambda:[0,T]\rightarrow [0,T]$ such that $\lambda\in \Lambda$ implies $\lambda,\lambda^{-1}$ are continuous up to a set of measure zero, and let $e$ be the identity map on $[0,T]$. Then we define
+\begin{align}
+d_{J_1}(x_1,x_2)&\define\inf_{\lambda\in \Lambda}\left\{\norm{x_1\circ \lambda -x_2}_{\infty}\lor \norm{\lambda-e}_{\infty}\right\}\label{J1Norm}
+\end{align}
 where $\norm{\cdot}_{\infty}$ is the $\sup$ norm and $\lor$ is the max function.\\
 
-Intuitively, this is suppose to capture the sup norm except you're allowed to perturb the function input a litte bit. So it's a bit weaker than the sup norm. Take for example when $T=1$,
+Intuitively, this is suppose to capture the sup norm except you're allowed to perturb the function input a litte bit. So it's a bit weaker than the sup norm. In fact, plugging in $\lambda=e$ in Equation \ref{J1Norm} tells us that everything is closer together with the $J_1$ metric compared to the $\sup$ metric. Take for example when $T=1$,
 \begin{align*}
 x_n=(1+n^{-1})\bm{1}_{\left\{[\frac{1}{2}+\frac{1}{n},1]\right\}}, \ \ x = \bm{1}_{\left\{[\frac{1}{2},1]\right\}}.
 \end{align*}
@@ -150,6 +198,53 @@ d_{J_1}(x_1,x_2)&=\inf_{\lambda\in \Lambda}\left\{\norm{x_n\circ \lambda}_\infty
 &\leq \max\left\{\norm{x_n\circ \lambda_n}_\infty, \norm{\lambda_n-e}_{\infty}\right\}\\
 &\leq \frac{1}{n}\rightarrow0.
 \end{align*}
+\clearpage
+\section*{Back to the Process of Robustification}
+We intend to invoke Theorem \ref{simplified_3} so that we can show that our robust ruin calculation simplifies to a standard Brownian motion ruin calculation with a different initial money-in-the-bank $u$. The set of interest is the ruin set,
+\begin{align*}
+A_u\define \left\{x\in S: \sup_{t\in[0,T]} \left(\sqrt{\nu m_2}x(t)-\nu m_1t\right)\geq u\right\}.
+\end{align*}
+In order to invoke Theorem \ref{simplified_3}, we must show that the above is closed. Before that we will want the following simple proposition,
+\begin{proposition} \label{prop_counter_example} I may be mistaken, but I do not believe the following is true:
+\begin{align*}
+\sup_{t\in[0,T]}y(t)\leq \sup_{t\in[0,T]} x(t)+d_{J_1}(x,y).
+\end{align*}
+\end{proposition}
+\begin{proof} Let $T=1$ and $y = \bm{1}_{\left\{[0,\frac{1}{2})\right\}}$ and $x=0$. Then $\sup_{t\in[0,1]} y=1$ and $\sup_{t\in[0,1]} x=0$ but for the choice $\lambda = \frac{1}{2}t+\frac{1}{2}$ we have $\norm{\lambda-e}_{\infty}=\frac{1}{2}$ and $y\circ \lambda = x$ so that $d_{J_1}(x,y)\leq \frac{1}{2}$. We conclude that,
+\begin{align*}
+\sup_{t\in[0,T]}y(t) = 1> 0+ \frac{1}{2} = \sup_{t\in[0,T]} x(t)+d_{J_1}(x,y).
+\end{align*}
+\end{proof}
+In the Appendix, we consider first the simpler set 
+\begin{align*}
+A_u = \left\{x\in D\left([0,T],\R\right): \sup_{t\in[0,1]} x(t)\geq u\right\},
+\end{align*}
+and attempt to prove $A_u$ is closed. I claim however that the example in Proposition \ref{prop_counter_example} lends us a way to show that $A_u$ does not contain all of its limit points. See the below proposition.
+\begin{proposition} $A_u$ is not closed.
+\end{proposition}
+\begin{proof} Consider the choice
+\begin{align*}
+y_n = \bm{1}_{\left\{[0,\frac{1}{n})\right\}}
+\end{align*}
+where we notice $y_n\in A_{\frac{1}{2}}$ for all $n$. On the other hand, we have that for the choice $\lambda_n(t) = \frac{1}{n}+(1-\frac{1}{n})t$ that $y_n\circ \lambda_n=0$ for all $n$ and $\norm{\lambda_n-e}_{\infty}=\frac{1}{n}\rightarrow 0 $ as $n\rightarrow \infty$. We conclude that $d_{J_1}(y_n,0)\rightarrow 0$. But $0\not\in A_{\frac{1}{2}}$ and therefore $A_\frac{1}{2}$ does not contain one of its limit points. The above proof can be modified by a scaling factor to prove for any $u$, that $A_u$ is not closed.
+\end{proof}
+
+
+
+% \begin{lemma}
+% The set $A_u\subseteq S$ is closed. 
+% \end{lemma}
+% \begin{proof}
+% We will show the compliment is open. Pick any $x$ in the compliment, and let 
+% \begin{align*}
+% \epsilon \define \frac{\left(u-\sup_{t\in[0,T]} \left(\sqrt{\nu m_2}x(t)-\nu m_1 t\right)\right)}{2}>0.
+% \end{align*}
+% Now consider some $y\in S$ which is within $\epsilon$ of $x$. We have,
+% \begin{align*}
+% \sup_{t\in [0,T]}\left(\sqrt{\nu m_2}y(t)-\nu m_1 t\right)\leq \sup_{t\in[0,T]}\left(\sqrt{\nu m_2}x(t)-\nu m_1 t\right)+\sqrt{\nu m_2}\epsilon<u,
+% \end{align*}
+% where we have used the fact that $d_{J_1}(x,y)$ is weaker than the $\sup$ norm. 
+% \end{proof}
 
 
 
@@ -172,6 +267,7 @@ But $A(t)=N(t)+S(t)$ is effectively the $\sup$ of a Brownian motion. Because of 
 h(u)=\int_{\left\{x:c(x,A)\leq u\right\}}^{}c(x,A)d\mu(x)
 \end{align*}
 is continuous? This is a stochastic integral in our case.
+\item  I seemed to have disproven the fact that $A_u$ is closed; where is my mistake or is this a typo?
 
 \end{enumerate}
 
