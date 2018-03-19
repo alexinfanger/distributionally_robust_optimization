@@ -143,7 +143,7 @@ Here $u$ is the initial money in the bank, $c$ is the premium rate, and the $X_i
 \begin{align*}
 c=\nu m_1
 \end{align*}
-where $\nu$ is the rate at which policies are sold. To make money, the firm adds a safety loading -- the so-called risk premium -- so that,
+where $\nu$ is the rate of the Poisson process. To make money, the firm adds a safety loading -- the so-called risk premium -- so that,
 \begin{align*}
 c=(1+\eta)\nu m_1.
 \end{align*}
@@ -166,16 +166,16 @@ S=D([0,T],\R)
 \end{align*}
 the space of real valued right-continuous functions with left limits equipped with the $J_1$ metric. 
 
-\section*{A Quick Digression: The $J_1$ Metric}
-The $J_1$ metric is supposed to be like a $\sup$ metric that is robust against time shifts that go to zero. The formal definition of the $J_1$ metric is, if we let $\Lambda$ be the set of strictly increasing functions $\lambda:[0,T]\rightarrow [0,T]$ such that $\lambda\in \Lambda$ implies $\lambda,\lambda^{-1}$ are continuous up to a set of measure zero, and let $e$ be the identity map on $[0,T]$. Then we define
+\section*{The $J_1$ Metric}
+The $J_1$ metric is supposed to be like a $\sup$ metric that is robust against time shifts that go to zero. Let $\Lambda$ be the set of strictly increasing and continuous functions $\lambda:[0,T]\rightarrow [0,T]$ such that $\lambda(0)=0$ and $\lambda(1) = 1$, and let $e$ be the identity map on $[0,T]$.  Then we define,
 \begin{align}
 d_{J_1}(x_1,x_2)&\define\inf_{\lambda\in \Lambda}\left\{\norm{x_1\circ \lambda -x_2}_{\infty}\lor \norm{\lambda-e}_{\infty}\right\}\label{J1Norm}
 \end{align}
-where $\norm{\cdot}_{\infty}$ is the $\sup$ norm and $\lor$ is the max function.\\
+where $\lor$ is the max function.\\
 
 Intuitively, this is suppose to capture the sup norm except you're allowed to perturb the function input a litte bit. So it's a bit weaker than the sup norm. In fact, plugging in $\lambda=e$ in Equation \ref{J1Norm} tells us that everything is closer together with the $J_1$ metric compared to the $\sup$ metric. Take for example when $T=1$,
 \begin{align*}
-x_n=(1+n^{-1})\bm{1}_{\left\{[\frac{1}{2}+\frac{1}{n},1]\right\}}, \ \ x = \bm{1}_{\left\{[\frac{1}{2},1]\right\}}.
+x_n=(1+n^{-1})\bm{1}_{\left\{[0,2^{-1}+n^{-1})\right\}}, \ \ x = \bm{1}_{\left\{[0,2^{-1})\right\}}.
 \end{align*}
 Then $\norm{x_n-x}_{\infty}\geq 1$ for all $n$ but $d_{J_1}(x_n,x)\rightarrow 0$ as $n\rightarrow\infty$. To show this notice that,
 \begin{align*}
@@ -184,11 +184,11 @@ d_{J_1}(x_n,x)&=\inf_{\lambda\in \Lambda}\left\{\norm{x_n\circ \lambda - x}_\inf
 \end{align*}
 for some feasible choices $\lambda_n$. Let us choose 
 \begin{align*}
-\lambda_n&=\begin{cases} x & x\in [0,\frac{1}{2}]\\
-(1-\frac{2}{n})x + \frac{2}{n}& x\in [\frac{1}{2},1],
+\lambda_n&=\begin{cases} (1+2n^{-1})t & t\in [0,2^{-1}]\\
+(1-2n^{-1})t + 2n^{-1}& t\in [2^{-1},1].
 \end{cases}
 \end{align*}
-which is effectively the identity from $[0,\frac{1}{2}]$ and then jumps to $\frac{1}{2}+\frac{1}{n}$ and then is the line which connects $(\frac{1}{2},\frac{1}{2}+\frac{1}{n})$ to $(1,1)$. Notice now that the difference between $x_n\circ \lambda_n$ and $x$ now only sees contribution from the part of the domain $\frac{1}{2}+\frac{1}{n}$, so that,
+Notice that the difference between $x_n\circ \lambda_n$ and $x$ sees contribution from the part of the domain $t\in[0,\frac{1}{2})$, so that,
 \begin{align*}
 \norm{x_n\circ \lambda_n-x}_{\infty}= \frac{1}{n}.
 \end{align*}
@@ -198,6 +198,21 @@ d_{J_1}(x_1,x_2)&=\inf_{\lambda\in \Lambda}\left\{\norm{x_n\circ \lambda}_\infty
 &\leq \max\left\{\norm{x_n\circ \lambda_n}_\infty, \norm{\lambda_n-e}_{\infty}\right\}\\
 &\leq \frac{1}{n}\rightarrow0.
 \end{align*}
+For readability we follow the convention of Billingsley $\lambda t\define \lambda(t)$. 
+\begin{theorem} Noting the above, a good characterization of convergence in $J_1$ is that,
+$d_{J_1}(x_n,x)\rightarrow 0 $ if and only if you can find some sequence $\lambda_n$ such that $\lim_n (x_n(\lambda_n(t))\rightarrow x(t)$  uniformly in $t$ and $\lambda_nt$ converges uniformly to $t$.
+\end{theorem}
+
+On uniformly continuous functions, Skorokhod convergence is equivalent to uniform convergence. From the triangle inequality, 
+\begin{align*}
+|x_n(t)-x(t)|\leq |x_n(t)-x(\lambda_n t)|+ |x(\lambda_n t)-x(t)|,
+\end{align*}
+which means if $d_{J_1}(x_n,x)\rightarrow 0$ then the left hand term goes to zero uniformly in $t$. The right hand term goes to zero uniformly in $t$ if we assume $x$ is uniformly continuous.\\
+
+[If there is time put in the $j(x)$ example].
+
+
+
 \clearpage
 \section*{Back to the Process of Robustification}
 We intend to invoke Theorem \ref{simplified_3} so that we can show that our robust ruin calculation simplifies to a standard Brownian motion ruin calculation with a different initial money-in-the-bank $u$. The set of interest is the ruin set,
@@ -205,15 +220,38 @@ We intend to invoke Theorem \ref{simplified_3} so that we can show that our robu
 A_u\define \left\{x\in S: \sup_{t\in[0,T]} \left(\sqrt{\nu m_2}x(t)-\nu m_1t\right)\geq u\right\}.
 \end{align*}
 In order to invoke Theorem \ref{simplified_3}, we must show that the above is closed. Before that we will want the following simple proposition,
-\begin{proposition} \label{prop_counter_example} I may be mistaken, but I do not believe the following is true:
+\begin{proposition} \label{prop_counter_example} The following inequality holds
 \begin{align*}
 \sup_{t\in[0,T]}y(t)\leq \sup_{t\in[0,T]} x(t)+d_{J_1}(x,y).
 \end{align*}
 \end{proposition}
-\begin{proof} Let $T=1$ and $y = \bm{1}_{\left\{[0,\frac{1}{2})\right\}}$ and $x=0$. Then $\sup_{t\in[0,1]} y=1$ and $\sup_{t\in[0,1]} x=0$ but for the choice $\lambda = \frac{1}{2}t+\frac{1}{2}$ we have $\norm{\lambda-e}_{\infty}=\frac{1}{2}$ and $y\circ \lambda = x$ so that $d_{J_1}(x,y)\leq \frac{1}{2}$. We conclude that,
+\begin{proof} The point is that we want to switch the well known inequality,
 \begin{align*}
-\sup_{t\in[0,T]}y(t) = 1> 0+ \frac{1}{2} = \sup_{t\in[0,T]} x(t)+d_{J_1}(x,y).
+|\sup_t y(t)-\sup_t x(t)|\leq \norm{x-y}_{\infty}
 \end{align*}
+with the slightly stronger statement,
+\begin{align*}
+|\sup_t y(t)-\sup_t x(t)|\leq \norm{x-\lambda y}_{\infty} \text{ for all $\lambda\in \Lambda$}.
+\end{align*}
+The desired conclusion will follow from taking an infimum over $\lambda$. Hence we follow a similar path to that of the former inequality. Notice that,
+\begin{align*}
+f(t)&\leq \sup_t f(t) \text{ for all $t$}\\
+g\lambda(t)&\leq \sup_t g(t) \text{ for all $t,\lambda$},
+\end{align*}
+from which we conclude,
+\begin{align*}
+\sup_t\left(f(t)+g\lambda(t)\right)\leq \sup_t f(t)+\sup_t g(t).
+\end{align*}
+For the choice $f=f-g\lambda$ we achieve,
+\begin{align*}
+\sup_t f(t)-\sup_t g(t)\leq \sup_t (f-g\lambda), \text{ for all $\lambda$}.
+\end{align*}
+Finally we have that,
+\begin{align*}
+\sup_t f(t)-\sup_t g(t)\leq \inf_{\lambda}\norm{f-g\lambda}_{\infty}\leq d_{J_1}(f,g).
+\end{align*}
+
+
 \end{proof}
 In the Appendix, we consider first the simpler set 
 \begin{align*}
@@ -265,13 +303,13 @@ is continuous.
 \end{proof}
 
 With the above statements you can identify $\lambda^*=h^{-1}(\delta)=\inf\left\{s\geq 0 : h(s)\geq \delta\right\}$. We can use Theorem \ref{simplified_3} to show,
-\begin{align*}
-\psi_{\text{rob}}(u,T)= \Pr\left[\sup_{t\in[0,T]} \left(\sqrt{\nu m_2}x(t)-\eta \nu m_1t\right)>u -\left(\frac{1}{\lambda^*}\right)^{1/p}\right] = \psi_B(\tilde u, T),
-\end{align*}
+\begin{align}
+\psi_{\text{rob}}(u,T)= \Pr\left[\sup_{t\in[0,T]} \left(\sqrt{\nu m_2}x(t)-\eta \nu m_1t\right)>u -\left(\frac{1}{\lambda^*}\right)^{1/p}\right] = \psi_B(\tilde u, T),\label{Brownian_robust}
+\end{align}
 and so finding the robust ruin probability just settles down to finding a different Brownian motion probability. 
 
 \section*{Numerical Example}
-In the numerical example from Jose Blanchet and Karthyek Murthy, they use the Paretto distribution for the claim sizes, with $\alpha=2.2$. One thing we need to do is to pick $\delta$. Ideally, we pick $\delta$ just big enough to capture the distance from the Brownian motion to our process. We approximate the optimal coupling by finding a good coupling between the Brownian motion and the Poisson process. The coupling offered by Khoshnevisan simulates a coupled Brownian motion and Poisson process so that they are very correlated. Hence we seem to assume the cost function is supermodular. With this embedding we can estimate the cost $\delta$ with Monte Carlo, and then use this to find $\lambda^*$. At this point we generate a new Brownian motion according to 
+In the numerical example from Jose Blanchet and Karthyek Murthy, they use the Paretto distribution for the claim sizes, with $\alpha=2.2$. One thing we need to do is to pick $\delta$. Ideally, we pick $\delta$ just big enough to capture the distance from the Brownian motion to our process. We approximate the optimal coupling by finding a good coupling between the Brownian motion and the Poisson process. The coupling offered by Khoshnevisan simulates a coupled Brownian motion and Poisson process so that they are very correlated. Hence we seem to assume the cost function is supermodular. With this embedding we can estimate the cost $\delta$ with Monte Carlo, and then use this to find $\lambda^*$. At this point we generate a new Brownian motion according to Equation \ref{Brownian_robust}. 
 
 
 \section*{Questions and things still to solve}
