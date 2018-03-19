@@ -220,7 +220,7 @@ We intend to invoke Theorem \ref{simplified_3} so that we can show that our robu
 A_u\define \left\{x\in S: \sup_{t\in[0,T]} \left(\sqrt{\nu m_2}x(t)-\nu m_1t\right)\geq u\right\}.
 \end{align*}
 In order to invoke Theorem \ref{simplified_3}, we must show that the above is closed. Before that we will want the following simple proposition,
-\begin{proposition} \label{prop_counter_example} The following inequality holds
+\begin{proposition} \label{prop_inequality} The following inequality holds
 \begin{align*}
 \sup_{t\in[0,T]}y(t)\leq \sup_{t\in[0,T]} x(t)+d_{J_1}(x,y).
 \end{align*}
@@ -250,39 +250,27 @@ Finally we have that,
 \begin{align*}
 \sup_t f(t)-\sup_t g(t)\leq \inf_{\lambda}\norm{f-g\lambda}_{\infty}\leq d_{J_1}(f,g).
 \end{align*}
-
-
 \end{proof}
-In the Appendix, we consider first the simpler set 
+In the Appendix, we consider the more general set 
 \begin{align*}
 A_u = \left\{x\in D\left([0,T],\R\right): \sup_{t\in[0,1]} x(t)\geq u\right\},
 \end{align*}
-and attempt to prove $A_u$ is closed. I claim however that the example in Proposition \ref{prop_counter_example} lends us a way to show that $A_u$ does not contain all of its limit points. See the below proposition.
-\begin{proposition} $A_u$ is not closed.
-\end{proposition}
-\begin{proof} Consider the choice
+and prove $A_u$ is closed.
+
+\begin{lemma}
+The set $A_u\subseteq S$ is closed in the $J_1$ metric. 
+\end{lemma}
+\begin{proof}
+We will show the compliment is open. Pick any $x$ in the compliment, and let 
 \begin{align*}
-y_n = \bm{1}_{\left\{[0,\frac{1}{n})\right\}}
+\epsilon \define \frac{\left(u-\sup_{t\in[0,T]} x(t)\right)}{2}>0.
 \end{align*}
-where we notice $y_n\in A_{\frac{1}{2}}$ for all $n$. On the other hand, we have that for the choice $\lambda_n(t) = \frac{1}{n}+(1-\frac{1}{n})t$ that $y_n\circ \lambda_n=0$ for all $n$ and $\norm{\lambda_n-e}_{\infty}=\frac{1}{n}\rightarrow 0 $ as $n\rightarrow \infty$. We conclude that $d_{J_1}(y_n,0)\rightarrow 0$. But $0\not\in A_{\frac{1}{2}}$ and therefore $A_\frac{1}{2}$ does not contain one of its limit points. The above proof can be modified by a scaling factor to prove for any $u$, that $A_u$ is not closed.
+Now consider some $y\in S$ which is within $\epsilon$ of $x$. We have using proposition \ref{prop_inequality}
+\begin{align*}
+\sup_{t\in [0,T]}y(t)\leq \sup_{t\in[0,T]}x(t) +d_{J_1}(y,x) < \sup_{t\in[0,T]}x(t)+ \epsilon<u.
+\end{align*}
+Hence we have found an open ball around $x$ that is contained in $A_u$. 
 \end{proof}
-
-
-
-% \begin{lemma}
-% The set $A_u\subseteq S$ is closed. 
-% \end{lemma}
-% \begin{proof}
-% We will show the compliment is open. Pick any $x$ in the compliment, and let 
-% \begin{align*}
-% \epsilon \define \frac{\left(u-\sup_{t\in[0,T]} \left(\sqrt{\nu m_2}x(t)-\nu m_1 t\right)\right)}{2}>0.
-% \end{align*}
-% Now consider some $y\in S$ which is within $\epsilon$ of $x$. We have,
-% \begin{align*}
-% \sup_{t\in [0,T]}\left(\sqrt{\nu m_2}y(t)-\nu m_1 t\right)\leq \sup_{t\in[0,T]}\left(\sqrt{\nu m_2}x(t)-\nu m_1 t\right)+\sqrt{\nu m_2}\epsilon<u,
-% \end{align*}
-% where we have used the fact that $d_{J_1}(x,y)$ is weaker than the $\sup$ norm. 
-% \end{proof}
 
 \begin{lemma} The minimum cost to the set $A_u$ satisfies,
 \begin{align*}
