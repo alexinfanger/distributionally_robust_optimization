@@ -295,7 +295,25 @@ c(x,A_u) &= \inf_{y\in A_u} \sup_t (y-x)\\
 &\geq \inf_{y\in A_u}\left(\inf_{t: y>u-\epsilon} y - \sup_t x\right)\\
 &\geq u-\sup_t x-\epsilon.
 \end{align*}
-For both bounds $\epsilon$ was arbitrary so indeed $c(x,A_u)= u-\sup_t x$.
+For both bounds $\epsilon$ was arbitrary so indeed $c(x,A_u)= u-\sup_t x$.\\
+
+Now our mission is to extend this for $p\geq 0$. That is, we want to show that,
+\begin{align*}
+\inf_{y\in A_u}c^p(x,y) = (u-\sup_tx)^p = \left(\inf_{y\in A_u} c(x,y)\right)^p.
+\end{align*}
+To this end, let $y_i$ attain the $\inf_{y\in A_u} c(x,y)$ and recognize that,
+\begin{align*}
+0\leq \lim_i c(x,y_i)\leq c(x,y) \text{ for all $y\in A_u$}
+\end{align*}
+which immediately implies,
+\begin{align*}
+0\leq \left(\lim_i c(x,y_i)\right)^p\leq c^p(x,y) \text{ for all $y\in A_u$}.
+\end{align*}
+Recognizing that $\left(\lim_i c(x,y_i)\right)^p=\lim_i c^p(x,y_i)$ for $p\geq 1$ we have that 
+\begin{align*}
+0\leq \lim_i c^p(x,y_i)\leq c^p(x,y) \text{ for all $y\in A_u$}.
+\end{align*}
+Hence we have found a sequence $y_i$ which attains a lower bound for $c^p(x,y)$ for everyone in $A_u$. We conclude that this $\lim_i c(x,y_i)^p = \left(\lim_i c(x,y_i)\right)^p=\left(u-\sup_t x\right)^p$ is the infimum.
 \end{proof}
 \end{lemma}
 
