@@ -95,13 +95,13 @@ is equal to the dual problem,
 \displaystyle \inf_{\lambda\geq 0}  &\displaystyle \lambda\delta +  \E_{\mu}\left[\sup_{y\in S} \left(f(y)-\lambda c(X,y)\right)\right]. 
 \end{array}
 \end{align*}
-With this strong duality come the complementary slackness conditions,
+Along with this strong duality, we have the complementary slackness conditions,
 \begin{align*}
 &\lambda\left(d_c(\mu,\nu)-\delta\right)=0\\
-&\phi(x)=\sup_y \left(f(y)-\lambda c(x,y)\right) \text{ $\pi^*$ a.s.}
+&\phi(x)=\sup_y \left(f(y)-\lambda c(x,y)\right) \text{ $\pi^*$ a.s. .}
 \end{align*}
 \end{theorem}
-
+\section*{The Build-Up of Theorem 3}
 Our mission now is to simplify the above when we our function $f=\bm{1}_{A}$ is an indicator, so that we can calulate ruin probabilities. Let me extend our definition slightly from class,
 \begin{align*}
 c(x,A) = \begin{cases}
@@ -274,10 +274,28 @@ Hence we have found an open ball around $x$ that is contained in $A_u$.
 
 \begin{lemma} The minimum cost to the set $A_u$ satisfies,
 \begin{align*}
-c(x,A_u) \define\inf\left\{c(x,y),y\in A_u\right\} = \left(u-\sup_{t\in[0,T]}\left(\sqrt{\nu m_2}x(t)-\eta \nu m_1t\right)\right)^p
+c(x,A_u) \define\inf\left\{c(x,y),y\in A_u\right\} = \left(u-\sup_{t\in[0,T]}x(t)\right)^p
 \end{align*}
 \begin{proof}
-In Appendix of paper. To be added.
+We will show this for $p=1$. The result follows. Let $\epsilon>0$ be smaller than $u-\sup_t x$. Define the shifted version of $x(t)$,
+\begin{align*}
+z(t) \define x(t) + \inf_{t}\left(u-x(t)\right)+ \epsilon,
+\end{align*}
+and notice that $z(t)\in A_u$. Then we have that,
+\begin{align*}
+c(x,A_u)\leq d_{J_1}(x,z)\leq \sup_t |z(t)-x(t)| \overset{\text{constant}}{=} \inf_t u- x(t)+\epsilon= u-\sup_t x+\epsilon.
+\end{align*}
+Next we show the other side of the inequality. Notice that,
+\begin{align*}
+c(x,A_u) = \inf_{y\in A_u}\inf_{\lambda\in \Lambda}\left\{\norm{x-y\lambda}_{\infty}\lor \norm{\lambda-e}_{\infty}\right\}.
+\end{align*}
+The good news is that $y\in A_u$ implies $y\lambda\in A$ so we can set $\lambda = e$ and find,
+\begin{align*}
+c(x,A_u) &= \inf_{y\in A_u} \sup_t (y-x)\\
+&\geq \inf_{y\in A_u}\left(\inf_{t: y>u-\epsilon} y - \sup_t x\right)\\
+&\geq u-\sup_t x-\epsilon.
+\end{align*}
+For both bounds $\epsilon$ was arbitrary so indeed $c(x,A_u)= u-\sup_t x$.
 \end{proof}
 \end{lemma}
 
